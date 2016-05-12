@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang = en>
+	<head>
+	<meta charset = "UTF-8" >
+	<title> TapChief Products</title>
+	</head>
+	
+<body>
+	<p>
+		<h1>The list of products</h1>
+	</p>
+	<div id ="div1">
+			  
+	</div>
+	<script>
+		var xhttp = XMLHttpRequest();
+		var url = 'https://tapchief-internship.herokuapp.com/products/';
+		xhttp.onreadystateexchange = function(){
+			if(xhttp.readyState == 4 && xhttp.status == 200){
+				var arr = JSON.parse(xhttp.resposeText);
+				newFunction(arr);
+			}
+		};
+		xhttp.open("GET",url,true);
+		xhttp.send();
+		
+	function newFunction(myArr) {
+    var out = "";
+    var i;
+    for(i = 0; i < myArr.length; i++) {
+        out += myArr[i].name + '<br>' + myArr[i].description + '<br>' + myArr[i].price + '<br>' + myArr[i].id;
+    }
+    document.getElementById("div1").innerHTML = out;
+	}
+	
+	function addProduct(){
+		var xhttp = XMLHttpRequest();
+		xhttp.onreadystateexchange = function(){
+			if(xhttp.readyState == 4 && xhttp.status == 200){		
+		var name = form.name.value;
+		var desc=from.description.value;
+		var price=form.price.value;
+		var url='https://tapchief-internship.herokuapp.com/products/';
+		var parameters = "name="+name+"description="+desc+"price="+price;
+		xhttp.open("POST",url,true);
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send(parameters);	
+		}
+	 };	
+	}
+	
+	function editProduct(){
+		var xhttp = XMLHttpRequest();
+		xhttp.onreadystateexchange = function(){
+			if(xhttp.readyState == 4 && xhttp.status == 200){
+		var name = form.name.value;
+		var desc=from.description.value;
+		var price=form.price.value;
+		var data=JSON.parse(xhttp.responseText);
+		var id=data.id;
+		xhttp.open("PUT",'https://tapchief-internship.herokuapp.com/products/'+id,true);
+		xhttp.setRequestHeader("Content-type","application/json");
+		xhttp.send();
+		}
+	 };
+	}
+	
+	function deleteProduct(){
+		var xhttp = XMLHttpRequest();
+		xhttp.onreadystateexchange = function(){
+			if(xhttp.readyState == 4 && xhttp.status == 200){
+		var name = form.name.value;
+		var desc=from.description.value;
+		var price=form.price.value;
+		var data=JSON.parse(xhttp.responseText);
+		var id=data.id;
+		xhttp.open("DELETE",'https://tapchief-internship.herokuapp.com/products/'+id,true);
+		xhttp.setRequestHeader("Content-type","application/json");
+		xhttp.send();
+		}
+	 };
+	}
+	
+	</script>
+	<form>
+		Name: <input type="text" name ="name" value=" " />
+		<br>
+		Description: <input type="text" name="Description" value=" " />
+		<br>
+		Price: <input type="text" name="price" value=" " />
+		<br>
+		
+		<button onclick="addProduct()">ADD</button>
+		<button onclick="editProduct()">MODIFY</button>
+		<button onclick="deleteProduct()">DELETE</button>
+	</form>
+</body>
+</html>
